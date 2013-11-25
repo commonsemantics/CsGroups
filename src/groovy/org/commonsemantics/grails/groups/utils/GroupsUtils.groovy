@@ -20,14 +20,53 @@
  */
 package org.commonsemantics.grails.groups.utils
 
+import org.apache.log4j.Logger;
 import org.commonsemantics.grails.groups.model.Group
+import org.commonsemantics.grails.utils.LoggingUtils
 
 
 /**
 * @author Paolo Ciccarese <paolo.ciccarese@gmail.com>
 */
-class GroupUtils {
+class GroupsUtils {
 
+	static Logger log = Logger.getLogger(GroupsUtils.class) // log4j
+	
+	static def getGroupMandatoryFields(def grailsApplication) {
+		def mandatory = [];
+		if(grailsApplication.config.org.commonsemantics.grails.groups.model.fields.mandatory.size()>0) {
+			mandatory.addAll(Eval.me(grailsApplication.config.org.commonsemantics.grails.groups.model.fields.mandatory));
+		}
+		return mandatory;
+	}
+	
+	static def getGroupDynamicMandatoryFields(def grailsApplication) {
+		if(isGroupStaticPropertyExisting('mandatory')) { 
+			def mandatory = Group.mandatory.clone();
+			mandatory.addAll(getGroupMandatoryFields(grailsApplication));
+			return mandatory;
+		} else return [];
+	}
+	
+	static boolean isGroupFieldRequired(def grailsApplication, def fieldName) {
+		// Mandatory fields by dynamic configuration
+		def mandatoryByConfiguration = getGroupDynamicMandatoryFields(grailsApplication)
+		// Mandatory fields by static coding
+		if(!Group.constraints[fieldName]?.nullable) mandatoryByConfiguration.add(fieldName);
+		
+		if((isGroupStaticPropertyExisting('mandatory') && fieldName in Group.mandatory) || fieldName in mandatoryByConfiguration) {
+			log.debug LoggingUtils.LOG_CONF + ' User mandatory field: ' + fieldName;
+			return true;
+		}
+		return false;
+	}
+	
+	static def isGroupStaticPropertyExisting(def name) {
+		Group.class.declaredFields.find {
+			it.name == 'x' && isStatic(it.modifiers)
+		}
+	}
+	
 	static String getStatusValue(Group group) {
 		if(group.isEnabled()) {
 			 if(group.isLocked()) return DefaultGroupStatus.LOCKED.value();
