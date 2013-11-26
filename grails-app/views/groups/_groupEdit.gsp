@@ -1,4 +1,6 @@
 <%@ page import="org.commonsemantics.grails.groups.utils.GroupsUtils" %>
+<%@ page import="org.commonsemantics.grails.groups.utils.DefaultGroupStatus" %>
+<%@ page import="org.commonsemantics.grails.groups.utils.DefaultGroupPrivacy" %>
 <%-- 
 By Dr. Paolo Ciccarese <paolo.ciccarese@gmail.com>
 
@@ -9,7 +11,7 @@ Stylesheet
 --%>
 <div class="sectioncontainer">
 	<g:if test="${group!=null}">
-		<g:hiddenField name="id" value="${user?.id}" /> 
+		<g:hiddenField name="id" value="${group?.id}" /> 
 		<table>		
 			<tr>
 				<td valign="top" >
@@ -54,6 +56,60 @@ Stylesheet
 								caption: '(max 255 ' +  g.message(code: 'org.commonsemantics.grails.general.chars',default:'chars') + ')'
 							]" />
 						</tbody>
+						<tr class="prop">
+							<td valign="top"  class="name">
+								<label for="groupStatus">
+									<g:message code="org.commonsemantics.grails.groups.model.field.status" default="Group Status"/>
+								</label>
+							</td>
+							<td valign="top" class="value" colspan="2">
+								<div>
+									<g:if test="${GroupsUtils.getStatusValue(group)==DefaultGroupStatus.ACTIVE.value()}">
+										<g:radio name="groupStatus" value="${DefaultGroupStatus.ACTIVE.value()}" checked="${true}"/> Active
+										<g:radio name="groupStatus" value="${DefaultGroupStatus.LOCKED.value()}" checked="${false}"/> Lock 
+										<g:radio name="groupStatus" value="${DefaultGroupStatus.DISABLED.value()}" checked="${false}"/> Disable 
+									</g:if>
+									<g:elseif test="${GroupsUtils.getStatusValue(group)==DefaultGroupStatus.LOCKED.value()}">
+										<g:radio name="groupStatus" value="${DefaultGroupStatus.ACTIVE.value()}" checked="${false}"/> Activate 
+										<g:radio name="groupStatus" value="${DefaultGroupStatus.LOCKED.value()}" checked="${true}"/> Locked 
+										<g:radio name="groupStatus" value="${DefaultGroupStatus.DISABLED.value()}" checked="${false}"/> Disable 
+									</g:elseif>
+									<g:else>
+										<g:radio name="groupStatus" value="${DefaultGroupStatus.ACTIVE.value()}" checked="${false}"/> Activate 
+										<g:radio name="groupStatus" value="${DefaultGroupStatus.LOCKED.value()}" checked="${false}"/> Lock 
+										<g:radio name="groupStatus" value="${DefaultGroupStatus.DISABLED.value()}" checked="${true}"/> Disabled
+									</g:else>
+								</div>
+							</td>
+							<td></td>
+						</tr>
+						<tr class="prop">
+							<td valign="top"  class="name">
+								<label for="groupPrivacy">
+									<g:message code="org.commonsemantics.grails.groups.model.field.privacy" default="Group Privacy"/>
+								</label>
+							</td>
+							<td valign="top" class="value" colspan="2">
+								<div>
+									<g:if test="${group.privacy.value==DefaultGroupPrivacy.PRIVATE.value()}">
+										<g:radio name="groupPrivacy" value="${DefaultGroupPrivacy.PRIVATE.value()}" checked="${true}"/> Private
+										<g:radio name="groupPrivacy" value="${DefaultGroupPrivacy.RESTRICTED.value()}" checked="${false}"/> Restricted 
+										<g:radio name="groupPrivacy" value="${DefaultGroupPrivacy.PUBLIC.value()}" checked="${false}"/> Public 
+									</g:if>
+									<g:elseif test="${group.privacy.value==DefaultGroupPrivacy.RESTRICTED.value()}">
+										<g:radio name="groupPrivacy" value="${DefaultGroupPrivacy.PRIVATE.value()}" checked="${false}"/> Private 
+										<g:radio name="groupPrivacy" value="${DefaultGroupPrivacy.RESTRICTED.value()}" checked="${true}"/> Restricted 
+										<g:radio name="groupPrivacy" value="${DefaultGroupPrivacy.PUBLIC.value()}" checked="${false}"/> Public 
+									</g:elseif>
+									<g:else>
+										<g:radio name="groupPrivacy" value="${DefaultGroupPrivacy.PRIVATE.value()}" checked="${false}"/> Private 
+										<g:radio name="groupPrivacy" value="${DefaultGroupPrivacy.RESTRICTED.value()}" checked="${false}"/> Restricted 
+										<g:radio name="groupPrivacy" value="${DefaultGroupPrivacy.PUBLIC.value()}" checked="${true}"/> Public
+									</g:else>
+								</div>
+							</td>
+							<td></td>
+						</tr>
 					</table>
 				</td>
 			</tr>

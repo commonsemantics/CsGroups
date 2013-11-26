@@ -20,7 +20,11 @@
  */
 package org.commonsemantics.grails.groups.controllers
 
+import org.commonsemantics.grails.groups.commands.GroupEditCommand
 import org.commonsemantics.grails.groups.model.Group
+import org.commonsemantics.grails.groups.model.GroupPrivacy
+import org.commonsemantics.grails.groups.utils.DefaultGroupPrivacy
+import org.commonsemantics.grails.groups.utils.DefaultGroupStatus
 
 
 /**
@@ -32,6 +36,7 @@ class TestsController {
 
 	def agentsService;
 	def usersService;
+	def groupsService;
 
 	def index = { render (view:'tests') }
 	
@@ -45,6 +50,58 @@ class TestsController {
 		log.debug("[TEST] edit-group " + (params.groupId?("(id:" + params.groupId + ")"):"(No id specified)"));
 		def group = getGroup(params.groupId)
 		render (view:'group-edit', model:[label:params.testId, description:params.testDescription, group:group]);
+	}
+	
+	def testUpdateGroup = { GroupEditCommand cmd ->
+		def validationFailed = groupsService.validateGroup(cmd);
+		if (validationFailed) {
+			log.error("[TEST] While Updating Group " + cmd.errors)
+		} else {
+			def group = Group.findById(params.id);
+			log.debug("[TEST] Updating Group " + group)
+			if(group!=null) {
+				group.name = params.name;
+				group.shortName = params.shortName;
+				group.description = params.description;
+	
+				updateGroupStatus(group, params.groupStatus)
+				updateGroupPrivacy(group, params.groupPrivacy);
+				
+				render (view:'group-show', model:[label:params.testId, description:params.testDescription, group:group]);
+				return;
+			}
+		}
+		render (view:'group-edit', model:[label:params.testId, description:params.testDescription, group:cmd]);
+	}
+	
+	def updateGroupStatus(def group, def status) {
+		println 'xxxxxxxxx ' + status
+		if(status.equals(DefaultGroupStatus.ACTIVE.value())) {
+			group.enabled = true
+			group.locked = false
+		} else if(status.equals(DefaultGroupStatus.DISABLED.value())) {
+			group.enabled = false
+			group.locked = false
+		} else if(status.equals(DefaultGroupStatus.LOCKED.value())) {
+			group.enabled = true
+			group.locked = true
+		}
+	}
+	
+	def updateGroupPrivacy(def group, def privacy) {
+		if(privacy==DefaultGroupPrivacy.PRIVATE.value()) {
+			group.privacy = GroupPrivacy.findByValue(DefaultGroupPrivacy.PRIVATE.value());
+		} else if(privacy==DefaultGroupPrivacy.RESTRICTED.value()) {
+			group.privacy = GroupPrivacy.findByValue(DefaultGroupPrivacy.RESTRICTED.value());
+		} else if(privacy==DefaultGroupPrivacy.PUBLIC.value()) {
+			group.privacy = GroupPrivacy.findByValue(DefaultGroupPrivacy.PUBLIC.value());
+		}
+		println 'lllllll ' + group.privacy
+	}
+	
+	def testCreateGroup = {
+		log.debug("[TEST] create-group ");
+		render (view:'group-create', model:[label:params.testId, description:params.testDescription]);
 	}
 	
 	private def getGroup(def id) {

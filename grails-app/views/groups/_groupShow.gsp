@@ -1,4 +1,4 @@
-<%@ page import="org.commonsemantics.grails.users.utils.UsersUtils" %>
+<%@ page import="org.commonsemantics.grails.groups.utils.GroupsUtils" %>
 
 <%-- 
 By Dr. Paolo Ciccarese <paolo.ciccarese@gmail.com>
@@ -29,7 +29,7 @@ Stylesheet
 						<g:else>-</g:else>
 					</td>
 				</tr>
-				<g:if test="${grailsApplication.config.org.commonsemantics.grails.persons.model.field.shortName!='hide'}">
+				<g:if test="${grailsApplication.config.org.commonsemantics.grails.groups.model.field.shortName!='hide'}">
 					<tr>
 						<td valign="top" width="150px"  align="left">
 							<g:message code="org.commonsemantics.grails.groups.model.field.shortName" default="Short Name"/>
@@ -40,7 +40,7 @@ Stylesheet
 						</td>
 					</tr>
 				</g:if>
-				<g:if test="${grailsApplication.config.org.commonsemantics.grails.persons.model.field.description!='hide'}">
+				<g:if test="${grailsApplication.config.org.commonsemantics.grails.groups.model.field.description!='hide'}">
 					<tr>
 						<td valign="top" width="150px"  align="left">
 							<g:message code="org.commonsemantics.grails.groups.model.field.description" default="Description"/>
@@ -51,6 +51,26 @@ Stylesheet
 						</td>
 					</tr>
 				</g:if>
+				<tr>
+					<td valign="top" align="left">
+						<g:message code="org.commonsemantics.grails.groups.model.field.status" default="Account Status"/>
+					</td>
+					<td valign="top" colspan="2" align="left">
+						<div>
+							${GroupsUtils.getStatusLabel(group)}						
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top" align="left">
+						<g:message code="org.commonsemantics.grails.groups.model.field.privacy" default="Account Privacy"/>
+					</td>
+					<td valign="top" colspan="2" align="left">
+						<div>
+							${group.privacy.label}				
+						</div>
+					</td>
+				</tr>
 				<tr>
 					<td valign="top" width="150px"  align="left">
 						<g:message code="org.commonsemantics.grails.groups.model.field.createdBy" default="Created By"/>

@@ -23,7 +23,7 @@
 			<br/>
 			<g:form method="post" >
 				<div class="csc-lens-container">
-					<g:render plugin="cs-users" template="/groups/groupEdit" />
+					<g:render plugin="cs-groups" template="/groups/groupEdit" />
 				</div>
 				<br/>
 				<tr>

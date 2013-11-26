@@ -195,6 +195,20 @@
 						plugin:'cs-groups', 
 						testId: '41', 
 						testDescription: 'Group edit lens',
+						passed: 'false']" />		
+				<g:render plugin="cs-users" template="/tests/testEntry" 
+					model="[
+						action:'testCreateGroup',
+						plugin:'cs-groups', 
+						testId: '42', 
+						testDescription: 'Group create lens',
+						passed: 'false']" />	
+				<g:render plugin="cs-users" template="/tests/testEntry" 
+					model="[
+						action:'testListGroups',
+						plugin:'cs-users', 
+						testId: '43', 
+						testDescription: 'Groups list lens',
 						passed: 'false']" />			
 			</table>	
 		</div>
