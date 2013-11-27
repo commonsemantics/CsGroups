@@ -119,6 +119,47 @@ class TestsController {
 			groupsTotal: Group.count(), max: params.max, offset: params.offset, controller:'tests', action: 'testListGroups']);
 	}
 	
+	def lockGroup = {
+		def group = Group.findById(params.id)
+		group.locked = true
+		group.enabled = true;
+		if(params.redirect)
+			redirect(action:params.redirect)
+		else
+			render (view:'showGroup', model:[item: group])
+	}
+
+
+	def unlockGroup = {
+		def group = Group.findById(params.id)
+		group.locked = false
+		group.enabled = true;
+		if(params.redirect)
+			redirect(action:params.redirect)
+		else
+			render (view:'showGroup', model:[item: group])
+	}
+
+	def enableGroup = {
+		def group = Group.findById(params.id)
+		group.enabled = true
+		group.locked = false
+		if(params.redirect)
+			redirect(action:params.redirect)
+		else
+			render (view:'showGroup', model:[item: group])
+	}
+
+	def disableGroup = {
+		def group = Group.findById(params.id)
+		group.enabled = false
+		group.locked = false
+		if(params.redirect)
+			redirect(action:params.redirect)
+		else
+			render (view:'showGroup', model:[item: group])
+	}
+	
 	private def getGroup(def id) {
 		def group;
 		if(id==null)  group = Group.list()[0];
