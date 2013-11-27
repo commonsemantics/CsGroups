@@ -76,7 +76,7 @@ Stylesheet
 						<g:message code="org.commonsemantics.grails.groups.model.field.createdBy" default="Created By"/>
 					</td>
 					<td valign="top" width="265px" align="left">
-						<g:if test="${group.createdBy}"><g:link action="testShowUser" id="${group.createdBy.id}">${group.createdBy.username}</g:link></g:if>
+						<g:if test="${group.createdBy}"><g:link action="showUser" id="${group.createdBy.id}">${group.createdBy.username}</g:link></g:if>
 						<g:else>-</g:else>
 					</td>
 				</tr>

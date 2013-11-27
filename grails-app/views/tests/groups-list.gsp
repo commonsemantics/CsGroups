@@ -11,28 +11,24 @@
 			<h1>${grailsApplication.metadata['app.name']}.${label} ${description}</h1>
 			
 			<g:render plugin="cs-users" template="/tests/userConfigurationDetails" />
-			
-			<h2>Group Create Lens (lang=<%=RequestContextUtils.getLocale(request).language %>)*</h3>
+					
+			<h3>${description} (lang=<%=RequestContextUtils.getLocale(request).language %>)*</h3>
 			<p>
 			* to change the Locale add ?lang=language to the URL of this page
 			</p>
 			<br/>
-			
-			<g:form method="post" >
+			<g:form>
 				<g:hiddenField name="testId" value="${label}" /> 
 				<g:hiddenField name="testDescription" value="After ${description}" /> 
-				
-				<div class="csc-lens-container">
-					<g:render plugin="cs-groups" template="/groups/groupCreate" />
-				</div>
+				Results per page: <g:textField name="max" style="width: 250px;" value="${max}" /><br/>
+				First page: <g:textField name="offset" style="width: 250px;" value="${offset}" /><br/>
+				<g:actionSubmit class="edit"  action="testListGroups" value="${message(code: 'default.button.edit.account.label', default: 'Refresh')}" />
 				
 				<br/>
-				<div class="buttons">
-					<span class="button">
-						<g:actionSubmit class="save" action="saveGroup" value="${message(code: 'org.commonsemantics.grails.users.profile.create', default: 'Create Group')}" />
-					</span>
-				</div>
-			</g:form>
+				<div class="csc-lens-container">
+					<g:render plugin="cs-groups" template="/groups/groupsList" />
+				</div>	
+			</g:form>	
 		</div>
 	</body>
 </html>

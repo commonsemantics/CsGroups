@@ -4,6 +4,7 @@ import org.commonsemantics.grails.groups.model.Group
 import org.commonsemantics.grails.groups.model.GroupPrivacy
 import org.commonsemantics.grails.groups.model.GroupRole
 import org.commonsemantics.grails.groups.model.GroupStatus
+import org.commonsemantics.grails.groups.model.UserGroup
 import org.commonsemantics.grails.groups.model.UserStatusInGroup
 import org.commonsemantics.grails.groups.utils.DefaultGroupPrivacy
 import org.commonsemantics.grails.groups.utils.DefaultGroupRoles
@@ -129,6 +130,13 @@ class BootStrap {
 			status: GroupStatus.findByValue(DefaultGroupStatus.ACTIVE.value()),
 			privacy: GroupPrivacy.findByValue(DefaultGroupPrivacy.PUBLIC.value())
 		).save(failOnError: true)
+		
+		def testUserGroup1 = UserGroup.findByUserAndGroup(admin, testGroup0)?: new UserGroup(
+			user: admin,
+			group: testGroup0,
+			status: UserStatusInGroup.findByValue(DefaultUserStatusInGroup.ACTIVE.value())
+		).save(failOnError: true, flash: true)
+		testUserGroup1.addToRoles GroupRole.findByAuthority(DefaultGroupRoles.ADMIN.value())
 		
 		separator();
 

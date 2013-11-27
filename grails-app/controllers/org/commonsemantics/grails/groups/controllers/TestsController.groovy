@@ -23,6 +23,7 @@ package org.commonsemantics.grails.groups.controllers
 import org.commonsemantics.grails.groups.commands.GroupEditCommand
 import org.commonsemantics.grails.groups.model.Group
 import org.commonsemantics.grails.groups.model.GroupPrivacy
+import org.commonsemantics.grails.groups.model.UserGroup
 import org.commonsemantics.grails.groups.utils.DefaultGroupPrivacy
 import org.commonsemantics.grails.groups.utils.DefaultGroupStatus
 
@@ -40,19 +41,19 @@ class TestsController {
 
 	def index = { render (view:'tests') }
 	
-	def testShowGroup = {
+	def showGroup = {
 		log.debug("[TEST] show-group " + (params.groupId?("(id:" + params.groupId + ")"):"(No id specified)"));
 		def group = getGroup(params.groupId)
 		render (view:'group-show', model:[label:params.testId, description:params.testDescription, group:group]);
 	}
 	
-	def testEditGroup = {
+	def editGroup = {
 		log.debug("[TEST] edit-group " + (params.groupId?("(id:" + params.groupId + ")"):"(No id specified)"));
 		def group = getGroup(params.groupId)
 		render (view:'group-edit', model:[label:params.testId, description:params.testDescription, group:group]);
 	}
 	
-	def testUpdateGroup = { GroupEditCommand cmd ->
+	def updateGroup = { GroupEditCommand cmd ->
 		def validationFailed = groupsService.validateGroup(cmd);
 		if (validationFailed) {
 			log.error("[TEST] While Updating Group " + cmd.errors)
@@ -74,7 +75,7 @@ class TestsController {
 		render (view:'group-edit', model:[label:params.testId, description:params.testDescription, group:cmd]);
 	}
 	
-	def updateGroupStatus(def group, def status) {
+	private def updateGroupStatus(def group, def status) {
 		println 'xxxxxxxxx ' + status
 		if(status.equals(DefaultGroupStatus.ACTIVE.value())) {
 			group.enabled = true
@@ -88,7 +89,7 @@ class TestsController {
 		}
 	}
 	
-	def updateGroupPrivacy(def group, def privacy) {
+	private def updateGroupPrivacy(def group, def privacy) {
 		if(privacy==DefaultGroupPrivacy.PRIVATE.value()) {
 			group.privacy = GroupPrivacy.findByValue(DefaultGroupPrivacy.PRIVATE.value());
 		} else if(privacy==DefaultGroupPrivacy.RESTRICTED.value()) {
@@ -99,9 +100,23 @@ class TestsController {
 		println 'lllllll ' + group.privacy
 	}
 	
-	def testCreateGroup = {
+	def createGroup = {
 		log.debug("[TEST] create-group ");
 		render (view:'group-create', model:[label:params.testId, description:params.testDescription]);
+	}
+	
+	def listGroups = {
+		log.debug("[TEST] list-groups max:" + params.max + " offset:" + params.offset)
+		
+		def groupsUsersCount = [:]
+		def groups = Group.list(params);
+		
+		groups.each { group ->
+			groupsUsersCount.put (group.id, UserGroup.findAllWhere(group: group).size())
+		}
+		
+		render (view:'groups-list', model:[label:params.testId, description:params.testDescription, groups:groups, groupsUsersCount: groupsUsersCount,
+			groupsTotal: Group.count(), max: params.max, offset: params.offset, controller:'tests', action: 'testListGroups']);
 	}
 	
 	private def getGroup(def id) {
