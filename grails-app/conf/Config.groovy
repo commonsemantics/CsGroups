@@ -36,5 +36,7 @@ log4j = {
 			'grails.app.services.org.commonsemantics.grails.agents.AgentsService',
 			'org.commonsemantics.grails.agents.utils',
 			'grails.app.controllers.org.commonsemantics.grails.users.controllers.TestsController',
-			'org.commonsemantics.grails.users.utils'
+			'org.commonsemantics.grails.users.utils',
+			'grails.app.controllers.org.commonsemantics.grails.groups.controllers.TestsController',
+			'org.commonsemantics.grails.groups.utils'
 }
