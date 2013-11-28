@@ -1,4 +1,5 @@
 <%@ page import="org.commonsemantics.grails.groups.utils.GroupsUtils" %>
+<%@ page import="org.commonsemantics.grails.groups.model.UserGroup" %>
 
 <%-- 
 By Dr. Paolo Ciccarese <paolo.ciccarese@gmail.com>
@@ -85,8 +86,9 @@ Stylesheet
 						<g:message code="org.commonsemantics.grails.groups.model.field.membersCounter" default="Members Counter"/>
 					</td>
 					<td valign="top" width="265px" align="left">
-						<g:if test="${group.membersCounter}">${group.membersCounter}</g:if>
-						<g:else>0</g:else>
+						<g:link action="listGroupUsers" id="${group.id}">
+							${UserGroup.findAllWhere(group: group).size()}
+						</g:link>
 					</td>
 				</tr>
 			</tbody>

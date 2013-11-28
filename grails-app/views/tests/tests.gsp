@@ -206,9 +206,16 @@
 				<g:render plugin="cs-users" template="/tests/testEntry" 
 					model="[
 						action:'listGroups',
-						plugin:'cs-users', 
+						plugin:'cs-groups', 
 						testId: '43', 
 						testDescription: 'Groups list lens',
+						passed: 'false']" />			
+				<g:render plugin="cs-users" template="/tests/testEntry" 
+					model="[
+						action:'listGroupUsers',
+						plugin:'cs-groups', 
+						testId: '44', 
+						testDescription: 'Group Users list lens',
 						passed: 'false']" />			
 			</table>	
 		</div>

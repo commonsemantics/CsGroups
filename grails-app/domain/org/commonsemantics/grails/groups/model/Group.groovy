@@ -37,8 +37,6 @@ class Group {
 	boolean enabled
 	boolean locked
 	 
-	int membersCounter;
-
 	User createdBy;
 	Date dateCreated, lastUpdated
 	
