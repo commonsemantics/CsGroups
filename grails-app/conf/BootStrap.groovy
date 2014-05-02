@@ -85,7 +85,7 @@ class BootStrap {
 				lastName: 'White',
 				displayName: 'Dr. White',
 				email:'paolo.ciccarese@gmail.com'
-			).save(failOnError: true);
+			).save(flush: true, failOnError: true);
 		}
 		
 		
@@ -95,8 +95,8 @@ class BootStrap {
 		def admin = User.findByUsername(adminUsername);
 		if(admin==null) {
 			admin = new User(username: adminUsername,
-				password: password, person: person, firstName: 'Jack', lastName: 'White',
-				displayName: 'Dr. White', enabled: true, email:'paolo.ciccarese@gmail.com').save(failOnError: true)
+				password: password, person: person,
+				enabled: true, email:'paolo.ciccarese@gmail.com').save(failOnError: true)
 			log.warn  "CHANGE PASSWORD for: " + adminUsername + "!!!"
 		}
 		UserRole.create admin, Role.findByAuthority(DefaultUsersRoles.USER.value())
