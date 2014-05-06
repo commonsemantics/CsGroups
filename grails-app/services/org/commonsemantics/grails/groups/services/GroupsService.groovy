@@ -21,6 +21,8 @@
 package org.commonsemantics.grails.groups.services
 
 import org.codehaus.groovy.grails.plugins.web.taglib.ValidationTagLib
+import org.commonsemantics.grails.groups.model.Group
+import org.commonsemantics.grails.groups.model.UserGroup
 import org.commonsemantics.grails.groups.utils.GroupsUtils
 
 /**
@@ -52,6 +54,49 @@ class GroupsService {
 			}
 		}
 		validationFailed;
+	}
+	
+	def listGroups(def max, def offset, def sort, def _order) {
+		
+		def groups = [];
+		def groupsCount = [:]
+		Group.list().each { agroup ->
+			groupsCount.put (agroup.id, UserGroup.findAllWhere(group: agroup).size())
+		}
+		def groupsStatus = [:]
+		Group.list().each { agroup ->
+			groupsStatus.put (agroup.id, GroupsUtils.getStatusValue(agroup))
+		}
+		
+		if (sort == 'groupsCount') {
+			groupsCount = groupsCount.sort{ a, b -> a.value <=> b.value }
+			if(_order == "desc")
+				groupsCount.each { groupCount ->
+					groups.add Group.findById(groupCount.key);
+				}
+			else
+				groupsCount.reverseEach { groupCount ->
+					groups.add Group.findById(groupCount.key);
+				}
+		} else if (sort == 'status') {
+			groupsStatus = groupsStatus.sort{ a, b -> a.value.compareTo(b.value) }
+			if(_order == "desc")
+				groupsStatus.each { groupStatus ->
+					groups.add Group.findById(groupStatus.key);
+				}
+			else
+				groupsStatus.reverseEach { groupStatus ->
+					groups.add Group.findById(groupStatus.key);
+				}
+		} else {
+			groups = Group.withCriteria {
+				maxResults(max?.toInteger())
+				firstResult(offset?.toInteger())
+				order(sort, _order)
+			}
+		}
+		
+		[groups, groupsCount]
 	}
 	
 //	def listUserGroups(def user, def _max, def _offset, def sort, def _order) {
