@@ -55,42 +55,44 @@
 
 		     		</td>
 		     		<td>
-			     		<div class="buttons">							
-							<g:hiddenField name="id" value="${group?.id}" /> 
-							<g:hiddenField name="redirect" value="listGroups" />
-							<span class="button">
-								<g:actionSubmit class="edit" action="editGroup" value="${message(code: 'default.button.edit.account.label', default: 'Edit')}" />
-							</span>
-							<g:if test="${GroupsUtils.getStatusValue(group) == DefaultGroupStatus.LOCKED.value()}">
+			     		<div class="buttons">	
+			     			<g:form>						
+								<g:hiddenField name="id" value="${group?.id}" /> 
+								<g:hiddenField name="redirect" value="listGroups" />
 								<span class="button">
-									<g:actionSubmit class="unlock" action="unlockGroup" value="${message(code: 'default.button.unlock.account.label', default: 'Unlock')}" />
+									<g:actionSubmit class="edit" action="editGroup" value="${message(code: 'default.button.edit.account.label', default: 'Edit')}" />
 								</span>
-							</g:if>
-							<g:elseif test="${GroupsUtils.getStatusValue(group) != DefaultGroupStatus.LOCKED.value()}">
+								<g:if test="${GroupsUtils.getStatusValue(group) == DefaultGroupStatus.LOCKED.value()}">
+									<span class="button">
+										<g:actionSubmit class="unlock" action="unlockGroup" value="${message(code: 'default.button.unlock.account.label', default: 'Unlock')}" />
+									</span>
+								</g:if>
+								<g:elseif test="${GroupsUtils.getStatusValue(group) != DefaultGroupStatus.LOCKED.value()}">
+									<span class="button">
+										<g:actionSubmit class="lock" action="lockGroup" value="${message(code: 'default.button.lock.account.label', default: 'Lock')}"
+										onclick="return confirm('${message(code: 'default.button.lock.account.confirm.message', default: 'Are you sure you want to lock the group: '+group.shortName+' ?')}');" />
+									</span>
+								</g:elseif>
+								<g:if test="${GroupsUtils.getStatusValue(group) == DefaultGroupStatus.DISABLED.value()}">
+									<span class="button">
+										<g:actionSubmit class="enable" action="enableGroup" value="${message(code: 'default.button.enable.account.label', default: 'Enable')}" />
+									</span>
+								</g:if>
+								<g:elseif test="${GroupsUtils.getStatusValue(group) != DefaultGroupStatus.DISABLED.value()}">
+									<span class="button">
+										<g:actionSubmit class="disable" action="disableGroup" value="${message(code: 'default.button.disable.account.label', default: 'Disable')}" 
+											onclick="return confirm('${message(code: 'default.button.disable.account.confirm.message', default: 'Are you sure you want to disable the group: '+group.shortName+' ?')}');" />
+									</span>
+								</g:elseif>
+								<%-- 
+								<g:if test="${groupsCount[group.id] == 0}">
 								<span class="button">
-									<g:actionSubmit class="lock" action="lockGroup" value="${message(code: 'default.button.lock.account.label', default: 'Lock')}"
-									onclick="return confirm('${message(code: 'default.button.lock.account.confirm.message', default: 'Are you sure you want to lock the group: '+group.shortName+' ?')}');" />
+									<g:actionSubmit class="delete" action="deleteGroup" value="${message(code: 'default.button.edit.account.label', default: 'Delete')}"
+										onclick="return confirm('${message(code: 'default.button.disable.account.confirm.message', default: 'Are you sure you want to delete the group: '+group.shortName+' ?')}');" />
 								</span>
-							</g:elseif>
-							<g:if test="${GroupsUtils.getStatusValue(group) == DefaultGroupStatus.DISABLED.value()}">
-								<span class="button">
-									<g:actionSubmit class="enable" action="enableGroup" value="${message(code: 'default.button.enable.account.label', default: 'Enable')}" />
-								</span>
-							</g:if>
-							<g:elseif test="${GroupsUtils.getStatusValue(group) != DefaultGroupStatus.DISABLED.value()}">
-								<span class="button">
-									<g:actionSubmit class="disable" action="disableGroup" value="${message(code: 'default.button.disable.account.label', default: 'Disable')}" 
-										onclick="return confirm('${message(code: 'default.button.disable.account.confirm.message', default: 'Are you sure you want to disable the group: '+group.shortName+' ?')}');" />
-								</span>
-							</g:elseif>
-							<%-- 
-							<g:if test="${groupsCount[group.id] == 0}">
-							<span class="button">
-								<g:actionSubmit class="delete" action="deleteGroup" value="${message(code: 'default.button.edit.account.label', default: 'Delete')}"
-									onclick="return confirm('${message(code: 'default.button.disable.account.confirm.message', default: 'Are you sure you want to delete the group: '+group.shortName+' ?')}');" />
-							</span>
-							</g:if>
-							--%>							
+								</g:if>
+								--%>
+							</g:form>							
 						</div>	     		
 		     		</td>
 		     	</tr>
