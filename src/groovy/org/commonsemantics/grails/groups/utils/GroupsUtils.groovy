@@ -32,7 +32,7 @@ class GroupsUtils {
 
 	static Logger log = Logger.getLogger(GroupsUtils.class) // log4j
 	
-	static def getGroupMandatoryFields(def grailsApplication) {
+	static def getGroupConfigurationMandatoryFields(def grailsApplication) {
 		def mandatory = [];
 		if(grailsApplication.config.org.commonsemantics.grails.groups.model.fields.mandatory.size()>0) {
 			mandatory.addAll(Eval.me(grailsApplication.config.org.commonsemantics.grails.groups.model.fields.mandatory));
@@ -41,11 +41,11 @@ class GroupsUtils {
 	}
 	
 	static def getGroupDynamicMandatoryFields(def grailsApplication) {
-		if(isGroupStaticPropertyExisting('mandatory')) { 
-			def mandatory = Group.mandatory.clone();
-			mandatory.addAll(getGroupMandatoryFields(grailsApplication));
+		//if(isGroupStaticPropertyExisting('mandatory')) { 
+			def mandatory = Group.mandatory.clone() as Set;
+			mandatory.addAll(getGroupConfigurationMandatoryFields(grailsApplication));
 			return mandatory;
-		} else return [];
+		//} else return [];
 	}
 	
 	static boolean isGroupFieldRequired(def grailsApplication, def fieldName) {
@@ -55,7 +55,7 @@ class GroupsUtils {
 		if(!Group.constraints[fieldName]?.nullable) mandatoryByConfiguration.add(fieldName);
 		
 		if((isGroupStaticPropertyExisting('mandatory') && fieldName in Group.mandatory) || fieldName in mandatoryByConfiguration) {
-			log.debug LoggingUtils.LOG_CONF + ' User mandatory field: ' + fieldName;
+			log.debug LoggingUtils.LOG_CONF + ' Group mandatory field: ' + fieldName;
 			return true;
 		}
 		return false;

@@ -44,13 +44,11 @@ class GroupCreateCommand {
 	String shortName;
 	String description;
 
-	String status;
-	String privacy;
+	String groupStatus;
+	String groupPrivacy;
 	
 	static constraints = {
-		name (nullable:false, blank: false, maxSize:NAME_MAX_SIZE)
-		shortName (nullable:false, blank: false, maxSize:SHORTNAME_MAX_SIZE)
-		description (nullable:false, blank:true, maxSize:DESCRIPION_MAX_SIZE)
+		importFrom Group
 	}
 	
 	boolean isEnabled() {

@@ -22,7 +22,10 @@ package org.commonsemantics.grails.groups.services
 
 import org.codehaus.groovy.grails.plugins.web.taglib.ValidationTagLib
 import org.commonsemantics.grails.groups.model.Group
+import org.commonsemantics.grails.groups.model.GroupPrivacy
 import org.commonsemantics.grails.groups.model.UserGroup
+import org.commonsemantics.grails.groups.utils.DefaultGroupPrivacy
+import org.commonsemantics.grails.groups.utils.DefaultGroupStatus
 import org.commonsemantics.grails.groups.utils.GroupsUtils
 
 /**
@@ -97,6 +100,31 @@ class GroupsService {
 		}
 		
 		[groups, groupsCount]
+	}
+	
+	def updateGroupStatus(def group, def status) {
+		log.debug 'Group ' + group + ' status ' + status
+		if(status.equals(DefaultGroupStatus.ACTIVE.value())) {
+			group.enabled = true
+			group.locked = false
+		} else if(status.equals(DefaultGroupStatus.DISABLED.value())) {
+			group.enabled = false
+			group.locked = false
+		} else if(status.equals(DefaultGroupStatus.LOCKED.value())) {
+			group.enabled = true
+			group.locked = true
+		}
+	}
+	
+	def updateGroupPrivacy(def group, def privacy) {
+		log.debug 'Group ' + group + ' privacy ' + privacy
+		if(privacy==DefaultGroupPrivacy.PRIVATE.value()) {
+			group.privacy = GroupPrivacy.findByValue(DefaultGroupPrivacy.PRIVATE.value());
+		} else if(privacy==DefaultGroupPrivacy.RESTRICTED.value()) {
+			group.privacy = GroupPrivacy.findByValue(DefaultGroupPrivacy.RESTRICTED.value());
+		} else if(privacy==DefaultGroupPrivacy.PUBLIC.value()) {
+			group.privacy = GroupPrivacy.findByValue(DefaultGroupPrivacy.PUBLIC.value());
+		}
 	}
 	
 //	def listUserGroups(def user, def _max, def _offset, def sort, def _order) {

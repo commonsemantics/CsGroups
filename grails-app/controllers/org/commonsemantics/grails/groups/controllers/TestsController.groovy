@@ -68,8 +68,8 @@ class TestsController {
 				group.shortName = params.shortName;
 				group.description = params.description;
 	
-				updateGroupStatus(group, params.groupStatus)
-				updateGroupPrivacy(group, params.groupPrivacy);
+				groupsService.updateGroupStatus(group, params.groupStatus)
+				groupsService.updateGroupPrivacy(group, params.groupPrivacy);
 				
 				render (view:'group-show', model:[label:params.testId, description:params.testDescription, group:group]);
 				return;
@@ -78,30 +78,30 @@ class TestsController {
 		render (view:'group-edit', model:[label:params.testId, description:params.testDescription, group:cmd]);
 	}
 	
-	private def updateGroupStatus(def group, def status) {
-		log.debug 'Group ' + group + ' status ' + status
-		if(status.equals(DefaultGroupStatus.ACTIVE.value())) {
-			group.enabled = true
-			group.locked = false
-		} else if(status.equals(DefaultGroupStatus.DISABLED.value())) {
-			group.enabled = false
-			group.locked = false
-		} else if(status.equals(DefaultGroupStatus.LOCKED.value())) {
-			group.enabled = true
-			group.locked = true
-		}
-	}
-	
-	private def updateGroupPrivacy(def group, def privacy) {
-		log.debug 'Group ' + group + ' privacy ' + privacy
-		if(privacy==DefaultGroupPrivacy.PRIVATE.value()) {
-			group.privacy = GroupPrivacy.findByValue(DefaultGroupPrivacy.PRIVATE.value());
-		} else if(privacy==DefaultGroupPrivacy.RESTRICTED.value()) {
-			group.privacy = GroupPrivacy.findByValue(DefaultGroupPrivacy.RESTRICTED.value());
-		} else if(privacy==DefaultGroupPrivacy.PUBLIC.value()) {
-			group.privacy = GroupPrivacy.findByValue(DefaultGroupPrivacy.PUBLIC.value());
-		}
-	}
+//	private def updateGroupStatus(def group, def status) {
+//		log.debug 'Group ' + group + ' status ' + status
+//		if(status.equals(DefaultGroupStatus.ACTIVE.value())) {
+//			group.enabled = true
+//			group.locked = false
+//		} else if(status.equals(DefaultGroupStatus.DISABLED.value())) {
+//			group.enabled = false
+//			group.locked = false
+//		} else if(status.equals(DefaultGroupStatus.LOCKED.value())) {
+//			group.enabled = true
+//			group.locked = true
+//		}
+//	}
+//	
+//	private def updateGroupPrivacy(def group, def privacy) {
+//		log.debug 'Group ' + group + ' privacy ' + privacy
+//		if(privacy==DefaultGroupPrivacy.PRIVATE.value()) {
+//			group.privacy = GroupPrivacy.findByValue(DefaultGroupPrivacy.PRIVATE.value());
+//		} else if(privacy==DefaultGroupPrivacy.RESTRICTED.value()) {
+//			group.privacy = GroupPrivacy.findByValue(DefaultGroupPrivacy.RESTRICTED.value());
+//		} else if(privacy==DefaultGroupPrivacy.PUBLIC.value()) {
+//			group.privacy = GroupPrivacy.findByValue(DefaultGroupPrivacy.PUBLIC.value());
+//		}
+//	}
 	
 	def createGroup = {
 		log.debug("[TEST] create-group ");

@@ -20,7 +20,6 @@ Stylesheet
 					</td>
 				</tr>
 				--%>
-				
 				<tr>
 					<td valign="top" width="150px"  align="left">
 						<g:message code="org.commonsemantics.grails.groups.model.field.name" default="Name"/>
