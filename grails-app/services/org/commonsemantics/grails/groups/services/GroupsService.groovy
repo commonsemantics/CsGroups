@@ -48,11 +48,12 @@ class GroupsService {
 		def g = new ValidationTagLib()
 		mandatory.each { item ->
 			if(!(cmd[item]!=null && cmd[item].trim().length()>0)) {
-				log.error('Error for field "' + item + '" which cannot be null')
+				log.error('Error for field "' + item + ' - ' + cmd[item])
 				//cmd.errors.reject(g.message(code: 'org.commonsemantics.grails.general.message.error.cannotbenull', default: 'Field cannot be null'),
 				//	[item, 'class User'] as Object[],
 				//	'[Property [{0}] of class [{1}] does not match confirmation]')
-				cmd.errors.rejectValue(item, g.message(code: 'default.blank.message', default: 'Field cannot be null'))
+				if(cmd.errors[item]==null) // This check if a validation error for this field is already present from previous validation steps
+					cmd.errors.rejectValue(item, g.message(code: 'default.blank.message', default: 'Field cannot be null'))
 				validationFailed=true;
 			}
 		}
