@@ -103,6 +103,72 @@ class GroupsService {
 		[groups, groupsCount]
 	}
 	
+	def searchGroups(def name, def shortName, def max, def offset, def _sort, def _order) {
+		def groups = [];
+		def groupsCount = [:]
+		def groupsStatus = [:]
+		Group.list().each { agroup ->
+			groupsCount.put (agroup.id, UserGroup.findAllWhere(group: agroup).size())
+			groupsStatus.put (agroup.id, GroupsUtils.getStatusLabel(agroup))
+		}
+
+		// Search with no ordering
+		def groupCriteria = Group.createCriteria();
+		def r = [];
+
+		if(name!=null && name.trim().length()>0 &&
+		shortName!=null && shortName.trim().length()>0) {
+			println 'case 1'
+			r = groupCriteria.list {
+				maxResults(max?.toInteger())
+				firstResult(offset?.toInteger())
+				order(_sort, _order)
+				and {
+					like('name', name)
+					like('shortName', shortName)
+				}
+			}
+		} else if(name!=null && name.trim().length()>0 &&
+		(shortName==null || shortName.trim().length()==0)) {
+			println 'case 2'
+			r = groupCriteria.list {
+				maxResults(max?.toInteger())
+				firstResult(offset?.toInteger())
+				order(_sort, _order)
+				like('name', name)
+			}
+		} else if((name==null || name.trim().length()==0) &&
+		shortName!=null &&  shortName.trim().length()>0) {
+			println 'case 3'
+			r = groupCriteria.list {
+				maxResults(max?.toInteger())
+				firstResult(offset?.toInteger())
+				order(_sort, order)
+				like('shortName', shortName)
+			}
+		} else {
+			println 'case 4'
+			r = groupCriteria.list {
+				maxResults(max?.toInteger())
+				firstResult(offset?.toInteger())
+				order(_sort, _order)
+			}
+		}
+		groups = r.toList();
+		//}
+
+
+		def groupsResults = []
+		groups.each { groupItem ->
+			def groupResult = [id:groupItem.id, name:groupItem.name, shortName: groupItem.shortName,
+						description: groupItem.description, status: GroupsUtils.getStatusLabel(groupItem), dateCreated: groupItem.dateCreated]
+			groupsResults << groupResult
+		}
+
+		def paginationResults = ['offset':offset+max, 'sort':_sort, 'order':_order]
+		def results = [groups: groupsResults, pagination: paginationResults, groupsCount: groupsCount]
+	}
+	
 	def updateGroupStatus(def group, def status) {
 		log.debug 'Group ' + group + ' status ' + status
 		if(status.equals(DefaultGroupStatus.ACTIVE.value())) {
