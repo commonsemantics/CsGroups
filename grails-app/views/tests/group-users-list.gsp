@@ -25,9 +25,13 @@
 				<g:actionSubmit class="edit"  action="listGroupUsers" value="${message(code: 'default.button.edit.account.label', default: 'Refresh')}" />
 				<br/>
 				<br/>
+				<h3>Group</h3>
 				<div class="csc-lens-container">
-					<g:render plugin="cs-users" template="/groups/groupUsersList" />
-				</div>	
+					
+					<g:render plugin="cs-groups" template="/groups/groupShow" />
+				</div>
+				<h3>Group users (${userGroups.size()})</h3>
+				<g:render plugin="cs-groups" template="/groups/groupUsersList" />
 			</g:form>	
 		</div>
 	</body>

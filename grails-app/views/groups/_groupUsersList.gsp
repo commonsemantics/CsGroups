@@ -6,9 +6,7 @@
 <div id="request" class="sectioncontainer">
 
 <div class="dialog">
-	<h3>Group</h3>
-	<g:render plugin="cs-groups" template="/groups/groupShow" />
-	<h3>Group users (${userGroups.size()})</h3>
+	
 	<div class="list">
 	<table class="tablelist">
 		<thead>
