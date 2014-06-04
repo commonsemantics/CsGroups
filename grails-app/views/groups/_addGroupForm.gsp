@@ -43,7 +43,7 @@
 						</tr>
 					</tbody>	
 				</table>
-</div>
+			</div>
 		</div>
 	</g:formRemote>
 </div>
