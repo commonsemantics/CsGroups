@@ -33,7 +33,7 @@ Stylesheet
 					</span>
 					&nbsp;
 					<span class="button">
-						<g:link controller="dashboard" action="addUserGroups" id="${user.id}" style="text-decoration: none;">Add Groups</g:link>
+						<g:link class="add" controller="dashboard" action="addUserGroups" id="${user.id}" style="text-decoration: none;">Enroll in Groups</g:link>
 					</span>
 				</div>
 			</div>
