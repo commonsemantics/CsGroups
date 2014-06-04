@@ -194,85 +194,31 @@ class GroupsService {
 		}
 	}
 	
-//	def listUserGroups(def user, def _max, def _offset, def sort, def _order) {
-//		
-//		/*
-//		def groups = [];
-//		def groupsCount = [:]
-//		def groupsStatus = [:]
-//		Group.list().each { agroup ->
-//			if(UserGroup.findByUserAndGroup(user, agroup)!=null) {
-//				groupsCount.put (agroup.id, UserGroup.findAllWhere(group: agroup).size())
-//				groupsStatus.put (agroup.id, agroup.status)
-//				groups.add (agroup)
-//			}
-//		}
-//
-//		if (sort == 'groupsCount') {
-//			groupsCount = groupsCount.sort{ a, b -> a.value <=> b.value }
-//			if(_order == "desc")
-//				groupsCount.each { groupCount ->
-//					groups.add Group.findById(groupCount.key);
-//				}
-//			else
-//				groupsCount.reverseEach { groupCount ->
-//					groups.add Group.findById(groupCount.key);
-//				}
-//		} else if (sort == 'status') {
-//			groupsStatus = groupsStatus.sort{ a, b -> a.value.compareTo(b.value) }
-//			if(_order == "desc")
-//				groupsStatus.each { groupStatus ->
-//					groups.add Group.findById(groupStatus.key);
-//				}
-//			else
-//				groupsStatus.reverseEach { groupStatus ->
-//					groups.add Group.findById(groupStatus.key);
-//				}
-//		} else {
-//		
-//			groups = Group.withCriteria {
-//				maxResults(_max?.toInteger())
-//				firstResult(_offset?.toInteger())
-//				order(sort, _order)
-//			}
-//		}
-//		*/
-//		
-//		def userGroups = [];
-//		UserGroup.createCriteria()
-//		
-//		def searchResult = UserGroup.createCriteria().list(
-//			max:_max, offset:_offset) {
-//				eq('user', user);
-//		}
-//		def allUserGroups = searchResult
-//		
-//		/*
-//		def userGroups = [];
-//		def groupsCount = [:]
-//		def groupsStatus = [:]
-//		def allUserGroups = UserGroup.findAllByUser(user);
-//		allUserGroups.each { userGroup ->
-//			groupsCount.put (userGroup.group, UserGroup.findAllWhere(group: userGroup.group).size())
-//			groupsStatus.put (userGroup.group, userGroup.group.status)
-//		}
-//		
-//		if (sort == 'groupsCount') {
-//			groupsCount = groupsCount.sort{ a, b -> a.value <=> b.value }
-//			if(_order == "desc")
-//				groupsCount.each { groupCount ->
-//					userGroups.add UserGroup.findByGroup(groupCount.key);
-//				}
-//			else
-//				groupsCount.reverseEach { groupCount ->
-//					userGroups.add UserGroup.findByGroup(groupCount.key);
-//				}
-//		}
-//		*/
-//		
-//		allUserGroups
-//	}
-//
+	def listUserGroups(def user) {
+		def userGroups = [];
+		def allUserGroups = [];
+		def searchResult = UserGroup.createCriteria().list() {
+			eq('user', user);
+		}
+		searchResult.each {
+			println it.group.enabled
+			if(it.group.enabled!=false) {
+				allUserGroups.add it
+			}
+		}
+		allUserGroups
+	}
+	
+	def listUserGroups(def user, def _max, def _offset, def sort, def _order) {		
+		def searchResult = UserGroup.createCriteria().list(
+			max:_max, offset:_offset) {
+				eq('user', user);
+		}
+		def allUserGroups = searchResult
+		
+		allUserGroups
+	}
+
 //	def getUserGroups(def user) {
 //		def ur = []
 //		def userGroups = []
@@ -340,19 +286,5 @@ class GroupsService {
 //		def userGroups = UserGroup.findAllByGroup(group);
 //		userGroups
 //	}
-//	
-//	def listUserGroups(def user) {
-//		def userGroups = [];
-//		def allUserGroups = [];
-//		def searchResult = UserGroup.createCriteria().list() {
-//			eq('user', user);
-//		}
-//		searchResult.each {
-//			println it.group.enabled
-//			if(it.group.enabled!=false) {
-//				allUserGroups.add it
-//			}
-//		}
-//		allUserGroups
-//	}
+
 }

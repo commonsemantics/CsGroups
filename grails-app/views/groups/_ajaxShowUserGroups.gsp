@@ -29,11 +29,11 @@ Stylesheet
 				</div>
 				<div class="buttons">
 					<span class="button">
-						<g:link class="edit" controller="adminDashboard" action="manageUserGroups"  id="${user.id}" style="text-decoration: none;">Manage Groups</g:link>
+						<g:link class="edit" controller="dashboard" action="manageUserGroups"  id="${user.id}" style="text-decoration: none;">Manage Groups</g:link>
 					</span>
 					&nbsp;
 					<span class="button">
-						<g:link controller="adminDashboard" action="addUserGroups" id="${user.id}" style="text-decoration: none;">Add Groups</g:link>
+						<g:link controller="dashboard" action="addUserGroups" id="${user.id}" style="text-decoration: none;">Add Groups</g:link>
 					</span>
 				</div>
 			</div>
