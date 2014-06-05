@@ -22,6 +22,7 @@ package org.commonsemantics.grails.groups.model
 
 import org.apache.commons.lang.builder.HashCodeBuilder
 import org.commonsemantics.grails.groups.utils.DefaultGroupRoles
+import org.commonsemantics.grails.groups.utils.DefaultUserStatusInGroup
 import org.commonsemantics.grails.users.model.User
 
 /**
@@ -36,6 +37,10 @@ class UserGroup implements Serializable {
 	Date dateCreated, lastUpdated // Grails automatic timestamping
 	
 	static hasMany = [roles: GroupRole]
+	
+	boolean isEnabled() {
+		return (status==DefaultUserStatusInGroup.ACTIVE)
+	}
 	
 	boolean isGuest() {
 		def course = roles.find { it.authority == DefaultGroupRoles.GUEST.value() }

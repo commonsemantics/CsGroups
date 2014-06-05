@@ -2,6 +2,7 @@
 <%@ page import="org.commonsemantics.grails.users.model.UserRole" %>
 <%@ page import="org.commonsemantics.grails.users.utils.DefaultUsersRoles" %>
 <%@ page import="org.commonsemantics.grails.users.utils.UsersUtils" %>
+<%@ page import="org.commonsemantics.grails.groups.utils.GroupsUtils" %>
 
 <div id="request" class="sectioncontainer">
 
@@ -51,26 +52,26 @@
 								<span class="button">
 									<g:actionSubmit class="edit"  action="unenrollUserFromGroup" value="${message(code: 'default.button.edit.account.label', default: 'Unenroll')}" />
 								</span>
-								<g:if test="${fieldValue(bean: user, field: 'accountLocked') == 'true'}">
+								<g:if test="${GroupsUtils.isUserInGroupLocked(userGroup)}">
 									<span class="button">
-										<g:actionSubmit class="unlock" action="unlockUser" value="${message(code: 'default.button.unlock.account.label', default: 'Unlock')}" />
+										<g:actionSubmit class="unlock" action="unlockUserInGroup" value="${message(code: 'default.button.unlock.account.label', default: 'Unlock')}" />
 									</span>
 								</g:if>
-								<g:elseif test="${fieldValue(bean: user, field: 'accountLocked') == 'false'}">
+								<g:elseif test="${!GroupsUtils.isUserInGroupLocked(userGroup)}">
 									<span class="button">
-										<g:actionSubmit class="lock" action="lockUser" value="${message(code: 'default.button.lock.account.label', default: 'Lock')}"
+										<g:actionSubmit class="lock" action="lockUserInGroup" value="${message(code: 'default.button.lock.account.label', default: 'Lock')}"
 										onclick="return confirm('${message(code: 'default.button.lock.account.confirm.message', default: 'Are you sure you want to lock this account?')}');" />
 									</span>
 								</g:elseif>
-								<g:if test="${fieldValue(bean: user, field: 'enabled') == 'true'}">
+								<g:if test="${GroupsUtils.isUserInGroupEnabled(userGroup)}">
 									<span class="button">
-										<g:actionSubmit class="disable" action="disableUser" value="${message(code: 'default.button.disable.account.label', default: 'Disable')}" 
-										onclick="return confirm('${message(code: 'default.button.disable.account.confirm.message', default: 'Are you sure you want to disable this account?')}');"/>
+										<g:actionSubmit class="disable" action="disableUserInGroup" value="${message(code: 'default.button.disable.account.label', default: 'Disable')}" 
+										onclick="return confirm('${message(code: 'default.button.disable.account.confirm.message', default: 'Are you sure you want to disable this user for this group?')}');"/>
 									</span>
 								</g:if>
-								<g:elseif test="${fieldValue(bean: user, field: 'enabled') == 'false'}">
+								<g:elseif test="${!GroupsUtils.isUserInGroupEnabled(userGroup)}">
 									<span class="button">
-										<g:actionSubmit class="enable" action="enableUser" value="${message(code: 'default.button.enable.account.label', default: 'Enable')}" />
+										<g:actionSubmit class="enable" action="enableUserInGroup" value="${message(code: 'default.button.enable.account.label', default: 'Enable')}" />
 									</span>
 								</g:elseif>
 							</g:form>

@@ -20,8 +20,9 @@
  */
 package org.commonsemantics.grails.groups.utils
 
-import org.apache.log4j.Logger;
+import org.apache.log4j.Logger
 import org.commonsemantics.grails.groups.model.Group
+import org.commonsemantics.grails.groups.model.UserGroup
 import org.commonsemantics.grails.utils.LoggingUtils
 
 
@@ -92,5 +93,14 @@ class GroupsUtils {
 		} else {
 			return DefaultGroupStatus.DISABLED.label();
 		}
+	}
+	
+	static boolean isUserInGroupEnabled(UserGroup userGroup) {
+		return (userGroup.status.value==DefaultUserStatusInGroup.ACTIVE.value ||
+			userGroup.status.value==DefaultUserStatusInGroup.LOCKED.value)
+	}
+	
+	static boolean isUserInGroupLocked(UserGroup userGroup) {
+		return userGroup.status.value==DefaultUserStatusInGroup.LOCKED.value
 	}
 }
