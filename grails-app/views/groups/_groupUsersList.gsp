@@ -85,5 +85,10 @@
    		<g:paginate total="${usersTotal}" controller="${controller}" action="${action}"/> 
 	</div>
 </div>
+<div class="buttons">
+	<span class="button">
+		<g:link class="add" controller="dashboard" action="enrollUsersInGroup" id="${user.id}" style="text-decoration: none;">Enroll More Users</g:link>
+	</span>
+</div>
 </div>
 </div>

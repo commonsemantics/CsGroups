@@ -24,8 +24,10 @@ import org.codehaus.groovy.grails.plugins.web.taglib.ValidationTagLib
 import org.commonsemantics.grails.groups.model.Group
 import org.commonsemantics.grails.groups.model.GroupPrivacy
 import org.commonsemantics.grails.groups.model.UserGroup
+import org.commonsemantics.grails.groups.model.UserStatusInGroup
 import org.commonsemantics.grails.groups.utils.DefaultGroupPrivacy
 import org.commonsemantics.grails.groups.utils.DefaultGroupStatus
+import org.commonsemantics.grails.groups.utils.DefaultUserStatusInGroup
 import org.commonsemantics.grails.groups.utils.GroupsUtils
 
 /**
@@ -217,6 +219,26 @@ class GroupsService {
 		def allUserGroups = searchResult
 		
 		allUserGroups
+	}
+	
+	def updateUserInGroupStatus(def usergroup, def status) {
+		log.debug 'UserGroup ' + usergroup + ' status ' + status
+		if(status.equals(DefaultUserStatusInGroup.ACTIVE.value())) {
+			usergroup.status = UserStatusInGroup.findByValue(DefaultUserStatusInGroup.ACTIVE.value());
+		} else if(status.equals(DefaultUserStatusInGroup.SUSPENDED.value())) {
+			usergroup.status = UserStatusInGroup.findByValue(DefaultUserStatusInGroup.SUSPENDED.value());
+		} else if(status.equals(DefaultUserStatusInGroup.LOCKED.value())) {
+			usergroup.status = UserStatusInGroup.findByValue(DefaultUserStatusInGroup.LOCKED.value());
+		}
+	}
+	
+	def boolean updateUserRoleInGroup(def usergroup, def role, def value) {
+		if(value=='on') {
+			if(!usergroup.roles.contains(role)) {
+				usergroup.roles.add(role);
+				return true;
+			}
+		}
 	}
 
 //	def getUserGroups(def user) {
