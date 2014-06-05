@@ -43,12 +43,13 @@
 		     			<div class="buttons">
 							<g:form>
 								<g:hiddenField name="id" value="${user?.id}" /> 
+								<g:hiddenField name="group" value="${userGroup?.group?.id}" /> 
 								<g:hiddenField name="redirect" value="listUsers" />
 								<span class="button">
 									<g:actionSubmit class="edit"  action="editUserInGroup" value="${message(code: 'default.button.edit.account.label', default: 'Edit')}" />
 								</span>
 								<span class="button">
-									<g:actionSubmit class="edit"  action="unenrollUserInGroup" value="${message(code: 'default.button.edit.account.label', default: 'Unenroll')}" />
+									<g:actionSubmit class="edit"  action="unenrollUserFromGroup" value="${message(code: 'default.button.edit.account.label', default: 'Unenroll')}" />
 								</span>
 								<g:if test="${fieldValue(bean: user, field: 'accountLocked') == 'true'}">
 									<span class="button">
