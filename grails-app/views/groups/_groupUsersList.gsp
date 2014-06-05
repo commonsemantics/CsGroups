@@ -87,7 +87,7 @@
 </div>
 <div class="buttons">
 	<span class="button">
-		<g:link class="add" controller="dashboard" action="enrollUsersInGroup" id="${user.id}" style="text-decoration: none;">Enroll More Users</g:link>
+		<g:link class="add" controller="dashboard" action="enrollUsersInGroup" id="${group.id}" style="text-decoration: none;">Enroll More Users</g:link>
 	</span>
 </div>
 </div>
