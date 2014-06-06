@@ -55,9 +55,16 @@
 				var eUsr = document.createElement('td');
 				eUsr.innerHTML = response.groups[i].status;
 				eTr.appendChild(eUsr);
+				
 				var eCnt = document.createElement('td');
-				eCnt.innerHTML = response.groupsCount[response.groups[i].id];
+				var eCountLink = document.createElement('a');
+				eCountLink.href = "listGroupUsers/" + response.groups[i].id;
+				eCountLink.innerHTML = response.groupsCount[response.groups[i].id];
+				eCnt.appendChild(eCountLink);
+				
+				//eCnt.innerHTML = response.groupsCount[response.groups[i].id];
 				eTr.appendChild(eCnt);
+				
 				eContent.appendChild(eTr);
 			}
 		} else {
