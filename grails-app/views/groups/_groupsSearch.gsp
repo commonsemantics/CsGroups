@@ -73,6 +73,9 @@
 
 	<body>
 		<g:render template="/groups/groupsSearchForm" />
+		<br/>
+		<div style="padding-top:5px; font-size: 15px;"> <img style="display: inline; vertical-align: middle;" src="${resource(dir:'images/dashboard',file:'groups.png')}" width="16px"/> Results</div>
+		
 		<g:render template="/groups/groupsSearchResults" />
 	</body>
 </html>
