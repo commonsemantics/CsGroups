@@ -20,8 +20,10 @@ import org.commonsemantics.grails.users.utils.DefaultUsersRoles
 class BootStrap {
 
 	def grailsApplication
-	def usersRolesService
-	def usersProfilePrivacyService
+	def usersInitializationService
+	
+//	def usersRolesService
+//	def usersProfilePrivacyService
 	
     def init = { servletContext ->
 		
@@ -45,10 +47,14 @@ class BootStrap {
 		
 		log.info  '>> INITIALIZING DEFAULTS'
 		separator();
+		
+		// USERS
+		// ------
 		log.info  '** Users Roles'
-		usersRolesService.register();
+		usersInitializationService.initializeRoles();
+		separator();
 		log.info  '** Users Profile Privacy'
-		usersProfilePrivacyService.register();
+		usersInitializationService.initializeProfilePrivacy();
 		
 //		DefaultUsersRoles.values().each {
 //			log.info  '** ' + it.value()
@@ -56,8 +62,7 @@ class BootStrap {
 //				new Role(authority: it.value(), ranking: it.ranking(), label: it.label(), description: it.description()).save(failOnError: true)
 //				log.info "Initialized: " + it.value()
 //			}
-//		}
-		
+//		}		
 //		DefaultUsersProfilePrivacy.values().each {
 //			if(!ProfilePrivacy.findByValue(it.value())) {
 //				new ProfilePrivacy(value: it.value(), label: it.label(), description: it.description()).save(failOnError: true)
