@@ -20,7 +20,9 @@ import org.commonsemantics.grails.users.utils.DefaultUsersRoles
 class BootStrap {
 
 	def grailsApplication
+	
 	def usersInitializationService
+	def groupsInitializationService
 	
 //	def usersRolesService
 //	def usersProfilePrivacyService
@@ -45,7 +47,7 @@ class BootStrap {
 		
 		separator();
 		
-		log.info  '>> INITIALIZING DEFAULTS'
+		log.info  '>> INITIALIZING DEFAULTS ENUMERATIONS'
 		separator();
 		
 		// USERS
@@ -55,61 +57,26 @@ class BootStrap {
 		separator();
 		log.info  '** Users Profile Privacy'
 		usersInitializationService.initializeProfilePrivacy();
-		
-//		DefaultUsersRoles.values().each {
-//			log.info  '** ' + it.value()
-//			if(!Role.findByAuthority(it.value())) {
-//				new Role(authority: it.value(), ranking: it.ranking(), label: it.label(), description: it.description()).save(failOnError: true)
-//				log.info "Initialized: " + it.value()
-//			}
-//		}		
-//		DefaultUsersProfilePrivacy.values().each {
-//			if(!ProfilePrivacy.findByValue(it.value())) {
-//				new ProfilePrivacy(value: it.value(), label: it.label(), description: it.description()).save(failOnError: true)
-//				log.info "Initialized: " + it.value()
-//			} else {
-//				log.info "Found: " + it.value()
-//			}
-//		}
+
 
 		// GROUPS
 		// ------
 		//////////ROLES
 		separator();
 		log.info  '** Groups Roles'
-		DefaultGroupRoles.values().each {
-			if(!GroupRole.findByAuthority(it.value())) {
-				new GroupRole(authority: it.value(), ranking: it.ranking(), label: it.label(), description: it.description()).save(failOnError: true)
-				log.info "Initialized: " + it.value()
-			}
-		}		
+		groupsInitializationService.initializeRoles();
 		//////////STATUS
 		separator();
 		log.info  '** Groups Status'
-		DefaultGroupStatus.values().each {
-			if(!GroupStatus.findByValue(it.value())) {
-				new GroupStatus(value: it.value(), uuid: it.uuid(), label: it.label(), description: it.description()).save(failOnError: true)
-				log.info "Initialized: " + it.value()
-			}
-		}
+		groupsInitializationService.initializeStatus();
 		//////////PRIVACY
 		separator();
 		log.info  '** Groups Privacy'
-		DefaultGroupPrivacy.values().each {
-			if(!GroupPrivacy.findByValue(it.value())) {
-				new GroupPrivacy(value: it.value(), uuid: it.uuid(), label: it.label(), description: it.description()).save(failOnError: true)
-				log.info "Initialized: " + it.value()
-			}
-		}
+		groupsInitializationService.initializePrivacy();
 		//////////USER STATUS IN GROUP
 		separator();
 		log.info  '** User Status in Group'
-		DefaultUserStatusInGroup.values().each {
-			if(!UserStatusInGroup.findByValue(it.value())) {
-				new UserStatusInGroup(value: it.value(), label: it.label(), description: it.description()).save(failOnError: true)
-				log.info "Initialized: " + it.value()
-			}
-		}
+		groupsInitializationService.initializeUserStatusInGroup();
 		
 		separator();
 		log.info  '>> USERS'
