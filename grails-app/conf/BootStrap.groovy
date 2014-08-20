@@ -10,14 +10,18 @@ import org.commonsemantics.grails.groups.utils.DefaultGroupPrivacy
 import org.commonsemantics.grails.groups.utils.DefaultGroupRoles
 import org.commonsemantics.grails.groups.utils.DefaultGroupStatus
 import org.commonsemantics.grails.groups.utils.DefaultUserStatusInGroup
+import org.commonsemantics.grails.users.model.ProfilePrivacy
 import org.commonsemantics.grails.users.model.Role
 import org.commonsemantics.grails.users.model.User
 import org.commonsemantics.grails.users.model.UserRole
+import org.commonsemantics.grails.users.utils.DefaultUsersProfilePrivacy
 import org.commonsemantics.grails.users.utils.DefaultUsersRoles
 
 class BootStrap {
 
 	def grailsApplication
+	def usersRolesService
+	def usersProfilePrivacyService
 	
     def init = { servletContext ->
 		
@@ -42,14 +46,26 @@ class BootStrap {
 		log.info  '>> INITIALIZING DEFAULTS'
 		separator();
 		log.info  '** Users Roles'
+		usersRolesService.register();
+		log.info  '** Users Profile Privacy'
+		usersProfilePrivacyService.register();
 		
-		DefaultUsersRoles.values().each {
-			log.info  '** ' + it.value()
-			if(!Role.findByAuthority(it.value())) {
-				new Role(authority: it.value(), ranking: it.ranking(), label: it.label(), description: it.description()).save(failOnError: true)
-				log.info "Initialized: " + it.value()
-			}
-		}
+//		DefaultUsersRoles.values().each {
+//			log.info  '** ' + it.value()
+//			if(!Role.findByAuthority(it.value())) {
+//				new Role(authority: it.value(), ranking: it.ranking(), label: it.label(), description: it.description()).save(failOnError: true)
+//				log.info "Initialized: " + it.value()
+//			}
+//		}
+		
+//		DefaultUsersProfilePrivacy.values().each {
+//			if(!ProfilePrivacy.findByValue(it.value())) {
+//				new ProfilePrivacy(value: it.value(), label: it.label(), description: it.description()).save(failOnError: true)
+//				log.info "Initialized: " + it.value()
+//			} else {
+//				log.info "Found: " + it.value()
+//			}
+//		}
 
 		// GROUPS
 		// ------
@@ -103,8 +119,7 @@ class BootStrap {
 				displayName: 'Dr. White',
 				email:'paolo.ciccarese@gmail.com'
 			).save(flush: true, failOnError: true);
-		}
-		
+		}	
 		
 		def password = 'password'
 		def adminUsername = 'admin'
@@ -113,6 +128,7 @@ class BootStrap {
 		if(admin==null) {
 			admin = new User(username: adminUsername,
 				password: password, person: person,
+				profilePrivacy:  ProfilePrivacy.findByValue(DefaultUsersProfilePrivacy.PRIVATE.value()),
 				enabled: true, email:'paolo.ciccarese@gmail.com').save(failOnError: true)
 			log.warn  "CHANGE PASSWORD for: " + adminUsername + "!!!"
 		}
