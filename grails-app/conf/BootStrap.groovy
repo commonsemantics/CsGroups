@@ -65,7 +65,6 @@ class BootStrap {
 		// ENTITIES
 		// --------
 		demarcation('>> INITIALIZING DEFAULTS ENTITIES');
-		demarcation('>> USERS');
 		separator('** Users');
 		
 		def person = Person.findByEmail('paolo.ciccarese@gmail.com');
@@ -93,10 +92,10 @@ class BootStrap {
 		UserRole.create admin, Role.findByAuthority(DefaultUsersRoles.MANAGER.value())
 		UserRole.create admin, Role.findByAuthority(DefaultUsersRoles.ADMIN.value())
 	
-		
 		separator();
-		def name = 'Software Test';
-		log.info  '** Software ' + name
+		log.info  '** Software '
+		def name = 'Software Test';		
+		log.info  "Initializing: " + name
 		def software = Software.findByName(name);
 		if(software==null) {
 			software = new Software(
@@ -109,7 +108,9 @@ class BootStrap {
 		
 		//////////GROUPS TESTS
 		separator();
+		log.info  '** Groups '
 		def group0 = "Test Group 0"
+		log.info  "Initializing: " + group0
 		def testGroup0 = Group.findByName(group0) ?: new Group(
 			name: group0,
 			shortName: 'TG0',
@@ -127,24 +128,27 @@ class BootStrap {
 			status: UserStatusInGroup.findByValue(DefaultUserStatusInGroup.ACTIVE.value())
 		).save(failOnError: true, flash: true)
 		testUserGroup1.addToRoles GroupRole.findByAuthority(DefaultGroupRoles.ADMIN.value())
-		
-		separator();
 
+		demarcation(">> Bootstrapping completed!")
+		separator()
     }
 	
 	private demarcation() {
-		log.info  '========================================================================';
+		log.info '========================================================================';
 	}
 	private demarcation(message) {
 		demarcation();
 		log.info  message
 	}
 	private separator() {
-		log.info  '------------------------------------------------------------------------';
+		log.info '------------------------------------------------------------------------';
 	}
 	private separator(message) {
 		separator();
 		log.info  message
+	}
+	private display(message) {
+		log.info message
 	}
 	
     def destroy = {
