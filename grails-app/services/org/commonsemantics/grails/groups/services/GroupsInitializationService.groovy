@@ -42,19 +42,19 @@ class GroupsInitializationService {
 		if(enumerationClass!=null && 
 				((enumerationClass instanceof ConfigObject && !enumerationClass.isEmpty()) || 
 				(enumerationClass instanceof String && enumerationClass.trim().length()>0))) {
-			log.info "Selected enumeration roles " + enumerationClass
+			log.debug "Selected enumeration roles " + enumerationClass
 			enumeration = this.getClass().classLoader.findClass(enumerationClass)
 		} else {
-			log.info "Selected default enumeration roles"
+			log.debug "Selected default enumeration roles"
 			enumeration = DefaultGroupRoles;
 		}
 		
 		enumeration.values().each {
 			if(!GroupRole.findByAuthority(it.value())) {
 				new GroupRole(authority: it.value(), ranking: it.ranking(), label: it.label(), description: it.description()).save(failOnError: true)
-				log.info "Initialized: " + it.value()
+				log.trace "Initialized: " + it.value()
 			} else {
-				log.info "Found: " + it.value()
+				log.trace "Found: " + it.value()
 			}
 		}
 	}
@@ -65,19 +65,19 @@ class GroupsInitializationService {
 		if(enumerationClass!=null && 
 				((enumerationClass instanceof ConfigObject && !enumerationClass.isEmpty()) || 
 				(enumerationClass instanceof String && enumerationClass.trim().length()>0))) {
-			log.info "Selected enumeration status " + enumerationClass
+			log.debug "Selected enumeration status " + enumerationClass
 			enumeration = this.getClass().classLoader.findClass(enumerationClass)
 		} else {
-			log.info "Selected default enumeration status"
+			log.debug "Selected default enumeration status"
 			enumeration = DefaultGroupStatus;
 		}
 		
 		enumeration.values().each {
 			if(!GroupStatus.findByValue(it.value())) {
 				new GroupStatus(value: it.value(), uuid: it.uuid(), label: it.label(), description: it.description()).save(failOnError: true)
-				log.info "Initialized: " + it.value()
+				log.trace "Initialized: " + it.value()
 			} else {
-				log.info "Found: " + it.value()
+				log.trace "Found: " + it.value()
 			}
 		}
 	}
@@ -88,19 +88,19 @@ class GroupsInitializationService {
 		if(enumerationClass!=null && 
 				((enumerationClass instanceof ConfigObject && !enumerationClass.isEmpty()) || 
 				(enumerationClass instanceof String && enumerationClass.trim().length()>0))) {
-			log.info "Selected enumeration privacy " + enumerationClass
+			log.debug "Selected enumeration privacy " + enumerationClass
 			enumeration = this.getClass().classLoader.findClass(enumerationClass)
 		} else {
-			log.info "Selected default enumeration privacy"
+			log.debug "Selected default enumeration privacy"
 			enumeration = DefaultGroupPrivacy;
 		}
 		
 		enumeration.values().each {
 			if(!GroupPrivacy.findByValue(it.value())) {
 				new GroupPrivacy(value: it.value(), uuid: it.uuid(), label: it.label(), description: it.description()).save(failOnError: true)
-				log.info "Initialized: " + it.value()
+				log.trace "Initialized: " + it.value()
 			} else {
-				log.info "Found: " + it.value()
+				log.trace "Found: " + it.value()
 			}
 		}
 	}
@@ -111,19 +111,19 @@ class GroupsInitializationService {
 		if(enumerationClass!=null && 
 				((enumerationClass instanceof ConfigObject && !enumerationClass.isEmpty()) || 
 				(enumerationClass instanceof String && enumerationClass.trim().length()>0))) {
-			log.info "Selected enumeration user status " + enumerationClass
+			log.debug "Selected enumeration user status " + enumerationClass
 			enumeration = this.getClass().classLoader.findClass(enumerationClass)
 		} else {
-			log.info "Selected default enumeration user status "
+			log.debug "Selected default enumeration user status "
 			enumeration = DefaultUserStatusInGroup;
 		}
 		
 		enumeration.values().each {
 			if(!UserStatusInGroup.findByValue(it.value())) {
 				new UserStatusInGroup(value: it.value(), label: it.label(), description: it.description()).save(failOnError: true)
-				log.info "Initialized: " + it.value()
+				log.trace "Initialized: " + it.value()
 			} else {
-				log.info "Found: " + it.value()
+				log.trace "Found: " + it.value()
 			}
 		}
 	}
