@@ -36,6 +36,7 @@ import org.commonsemantics.grails.groups.utils.GroupsUtils
 class GroupsService {
 
 	def grailsApplication;
+	def agentsService;
 	
 	def validateGroup(def cmd) {
 		boolean validationFailed = false;
@@ -220,6 +221,12 @@ class GroupsService {
 			}
 		}
 		allUsersGroups
+	}
+	
+	def getGroupAgentIdentifiers(def groupId) {
+		if(groupId.indexOf('group:')>-1) groupId = groupId.substring(6);
+		def group = Group.findById(groupId);
+		return agentsService.getAgentIdentifiers(group);
 	}
 	
 	def listUserGroups(def user, def _max, def _offset, def sort, def _order) {		
