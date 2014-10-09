@@ -20,12 +20,13 @@
  */
 package org.commonsemantics.grails.groups.model
 
+import org.commonsemantics.grails.agents.model.Agent
 import org.commonsemantics.grails.users.model.User
 
 /**
 * @author Paolo Ciccarese <paolo.ciccarese@gmail.com>
 */
-class Group {
+class Group extends Agent {
 
 	public static final Integer NAME_MAX_SIZE = 255;
 	public static final Integer SHORTNAME_MAX_SIZE = 16;
@@ -77,6 +78,8 @@ class Group {
 	
 	static constraints = {
 		id maxSize: 36
+		displayName (nullable: true, blank: true, maxSize:NAME_MAX_SIZE)
+		
 		name (nullable:false, blank: false, unique: true, maxSize:NAME_MAX_SIZE)
 		shortName  (nullable:true, blank: true, maxSize:SHORTNAME_MAX_SIZE)
 		description (nullable:true, blank:true, maxSize:DESCRIPION_MAX_SIZE)

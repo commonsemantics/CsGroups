@@ -197,18 +197,29 @@ class GroupsService {
 	}
 	
 	def listUserGroups(def user) {
-		def userGroups = [];
 		def allUserGroups = [];
 		def searchResult = UserGroup.createCriteria().list() {
 			eq('user', user);
 		}
 		searchResult.each {
-			println it.group.enabled
 			if(it.group.enabled!=false) {
 				allUserGroups.add it
 			}
 		}
 		allUserGroups
+	}
+	
+	def listUsersGroups(def user) {
+		def allUsersGroups = [];
+		def searchResult = UserGroup.createCriteria().list() {
+			eq('user', user);
+		}
+		searchResult.each {
+			if(it.group.enabled!=false) {
+				allUsersGroups.add it.group
+			}
+		}
+		allUsersGroups
 	}
 	
 	def listUserGroups(def user, def _max, def _offset, def sort, def _order) {		
